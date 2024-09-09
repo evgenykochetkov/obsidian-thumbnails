@@ -43,6 +43,16 @@ const URL_TYPES = {
 	]
 };
 
+const removeTrackingParams = (probablyUrl: string) => {
+	try {
+		const url = new URL(probablyUrl);
+		url.searchParams.delete('si');
+		return url.toString();
+	} catch (_) {
+		return probablyUrl;
+	}
+}
+
 export default class ThumbyPlugin extends Plugin {
 	settings: ThumbySettings;
 	private editorObserver: ResizeObserver;
@@ -208,7 +218,9 @@ export default class ThumbyPlugin extends Plugin {
 					new Notice('No valid video in clipboard', 2000);
 					return;
 				}
-				editor.replaceSelection(`\`\`\`vid\n${clipText}\n\`\`\``);
+
+				const cleanUrl = removeTrackingParams(clipText);
+				editor.replaceSelection(`\`\`\`vid\n${cleanUrl}\n\`\`\``);
 			}
 		});
 
@@ -225,7 +237,8 @@ export default class ThumbyPlugin extends Plugin {
 				}
 				const info = await this.getVideoInfo(clipText);
 
-				editor.replaceSelection(`[${info.title}](${info.url})`);
+				const cleanUrl = removeTrackingParams(info.url);
+				editor.replaceSelection(`[${info.title}](${cleanUrl})`);
 			}
 		});
 	}
