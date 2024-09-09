@@ -200,6 +200,7 @@ export default class ThumbyPlugin extends Plugin {
 		this.addCommand({
 			id: "insert-thumbnail-from-clipboard",
 			name: "Insert thumbnail from URL in clipboard",
+			icon: "youtube",
 			editorCallback: async (editor: Editor, view: MarkdownView) => {
 				const clipText = await navigator.clipboard.readText();
 				const id = await this.getVideoId(clipText);
@@ -214,6 +215,7 @@ export default class ThumbyPlugin extends Plugin {
 		this.addCommand({
 			id: "insert-video-title-link",
 			name: "Insert video title link from URL in clipboard",
+			icon: "youtube",
 			editorCallback: async (editor: Editor, view: MarkdownView) => {
 				const clipText = await navigator.clipboard.readText();
 				const id = await this.getVideoId(clipText);
